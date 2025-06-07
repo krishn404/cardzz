@@ -70,3 +70,4 @@ Cardzz is licensed under the MIT License. See `LICENSE` for more information.
 
 **Acknowledgments**
 Thank you to the entire Cardzz team for their hard work and dedication. 💡
+<!-- GitAds-Verify: MWML9C7CUGQN5GDPCHXKDCNZKRLW2OT4 -->
