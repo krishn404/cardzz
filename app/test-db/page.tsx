@@ -242,7 +242,7 @@ export default function TestDbPage() {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Database className="h-6 w-6" />
-            <span>Cardly Database & Environment Test</span>
+            <span>Cardzz Database & Environment Test</span>
           </CardTitle>
           <p className="text-gray-600">
             This page tests your database connection, tables, environment variables, and overall setup.

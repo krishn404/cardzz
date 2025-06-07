@@ -49,7 +49,7 @@ export function Navbar() {
             <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl shadow-lg">
               <CreditCard className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-gradient">Cardly</span>
+            <span className="text-xl font-bold text-gradient">Cardzz</span>
           </Link>
 
           {/* Desktop Navigation */}

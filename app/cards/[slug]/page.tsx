@@ -128,7 +128,7 @@ export async function generateMetadata({ params }: CardDetailPageProps) {
   }
 
   return {
-    title: `${card.name} - ${card.bank} | Cardly`,
+    title: `${card.name} - ${card.bank} | Cardzz`,
     description: card.benefits.substring(0, 160),
   }
 }

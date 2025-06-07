@@ -9,4 +9,4 @@ INSERT INTO cards (name, slug, bank, category, eligibility, benefits, joining_fe
 
 -- Insert admin user (replace with your Firebase UID)
 INSERT INTO users (firebase_uid, name, email, is_admin) VALUES
-('admin-firebase-uid-here', 'Admin User', 'admin@cardly.com', true);
+('admin-firebase-uid-here', 'Admin User', 'admin@Cardzz.com', true);

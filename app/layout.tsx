@@ -10,7 +10,7 @@ import { MobileBottomNavV2 } from "@/components/mobile-bottom-nav-v2"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Cardly - Community Credit Card Referrals",
+  title: "Cardzz - Community Credit Card Referrals",
   description:
     "Find the best credit cards through community referrals. Compare benefits, earn rewards, and help others save money.",
   keywords: "credit cards, referrals, rewards, cashback, travel points",

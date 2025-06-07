@@ -24,7 +24,7 @@ export function Footer({ className }: FooterProps) {
               Contact
             </a>
           </div>
-          <p className="text-xs text-gray-400">© 2024 Cardly. All rights reserved.</p>
+          <p className="text-xs text-gray-400">© 2024 Cardzz. All rights reserved.</p>
         </div>
       </div>
     </footer>
