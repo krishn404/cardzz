@@ -54,7 +54,7 @@ export function MobileBottomNavV2() {
                 href={item.href}
                 className={cn(
                   "flex items-center justify-center transition-all",
-                  item.isCenter ? "-mt-7" : "",
+                  item.isCenter ? "-mt-2" : "",
                   item.active ? "bg-white text-black rounded-full px-5 py-2" : "text-gray-400 hover:text-gray-300",
                 )}
               >

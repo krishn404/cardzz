@@ -250,7 +250,7 @@ export default function HomePage() {
                     variant="outline"
                     size="lg"
                     asChild
-                    className="border-white/30 text-white hover:bg-white/10 rounded-2xl"
+                    className="border-white/30 text-black hover:bg-white/10 rounded-2xl"
                   >
                     <Link href="/my-submissions">View My Cards</Link>
                   </Button>

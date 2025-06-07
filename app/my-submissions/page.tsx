@@ -4,19 +4,43 @@ import { useState, useEffect } from "react"
 import { useAuth } from "@/lib/auth-context"
 import type { Card } from "@/lib/types"
 import { supabase } from "@/lib/supabase"
+import { deleteCard } from "@/app/actions/update-card"
 import { Button } from "@/components/ui/button"
 import { Card as UICard, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { CheckCircle, XCircle, AlertCircle, Plus, ExternalLink, User, Clock } from "lucide-react"
+import { EditCardForm } from "@/components/edit-card-form"
+import { CheckCircle, XCircle, AlertCircle, Plus, ExternalLink, User, Clock, Edit, Trash2, Loader2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function MySubmissionsPage() {
   const { user, dbUser, loading: authLoading } = useAuth()
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [editingCard, setEditingCard] = useState<Card | null>(null)
+  const [deletingCardId, setDeletingCardId] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (dbUser) {
@@ -43,6 +67,38 @@ export default function MySubmissionsPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleDelete = async (cardId: string) => {
+    if (!user) return
+
+    setDeletingCardId(cardId)
+    try {
+      const result = await deleteCard(cardId, user.uid)
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to delete card")
+      }
+
+      setSuccessMessage("Card deleted successfully!")
+      fetchMyCards() // Refresh the list
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(null), 3000)
+    } catch (error: any) {
+      setError(error.message || "Failed to delete card")
+    } finally {
+      setDeletingCardId(null)
+    }
+  }
+
+  const handleEditSuccess = () => {
+    setEditingCard(null)
+    setSuccessMessage("Card updated successfully!")
+    fetchMyCards() // Refresh the list
+
+    // Clear success message after 3 seconds
+    setTimeout(() => setSuccessMessage(null), 3000)
   }
 
   const getStatusBadge = (status: string) => {
@@ -114,18 +170,27 @@ export default function MySubmissionsPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="max-w-4xl mx-auto mobile-container py-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 md:mb-12">
           <div className="flex items-center justify-center mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center">
               <User className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">My Card Submissions</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">My Card Submissions</h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
             View and manage all the credit cards you've submitted to the community.
           </p>
         </div>
 
+        {/* Success Message */}
+        {successMessage && (
+          <Alert className="mb-8 rounded-2xl border-green-200 bg-green-50">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <AlertDescription className="text-green-800">{successMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Error Message */}
         {error && (
           <Alert variant="destructive" className="mb-8 rounded-2xl">
             <AlertCircle className="h-4 w-4" />
@@ -206,6 +271,73 @@ export default function MySubmissionsPage() {
                               Submitted {new Date(card.created_at).toLocaleDateString()}
                             </span>
                           </div>
+                        </div>
+                        <div className="flex space-x-2">
+                          {/* Edit Button */}
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-xl"
+                                onClick={() => setEditingCard(card)}
+                              >
+                                <Edit className="h-4 w-4 mr-1" />
+                                Edit
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                              <DialogHeader>
+                                <DialogTitle>Edit Card</DialogTitle>
+                                <DialogDescription>
+                                  Update your card information. Changes will be reflected immediately.
+                                </DialogDescription>
+                              </DialogHeader>
+                              {editingCard && (
+                                <EditCardForm
+                                  card={editingCard}
+                                  onSuccess={handleEditSuccess}
+                                  onCancel={() => setEditingCard(null)}
+                                />
+                              )}
+                            </DialogContent>
+                          </Dialog>
+
+                          {/* Delete Button */}
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50"
+                                disabled={deletingCardId === card.id}
+                              >
+                                {deletingCardId === card.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Trash2 className="h-4 w-4" />
+                                )}
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Card</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete "{card.name}"? This action cannot be undone and will
+                                  also remove all associated referrals.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDelete(card.id)}
+                                  className="bg-red-600 hover:bg-red-700"
+                                >
+                                  Delete Card
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </div>
 

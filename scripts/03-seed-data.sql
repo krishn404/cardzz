@@ -7,6 +7,3 @@ INSERT INTO cards (name, slug, bank, category, eligibility, benefits, joining_fe
 ('American Express Gold', 'amex-gold', 'American Express', 'Dining', 'Good Credit', '4x points on dining and groceries, $120 dining credit', 0, 250, '/placeholder.svg?height=200&width=300'),
 ('Chase Freedom Unlimited', 'chase-freedom-unlimited', 'Chase', 'Cashback', 'Fair Credit', '1.5% cash back on all purchases, $200 bonus', 0, 0, '/placeholder.svg?height=200&width=300');
 
--- Insert admin user (replace with your Firebase UID)
-INSERT INTO users (firebase_uid, name, email, is_admin) VALUES
-('admin-firebase-uid-here', 'Admin User', 'admin@Cardzz.com', true);
