@@ -71,3 +71,6 @@ Cardzz is licensed under the MIT License. See `LICENSE` for more information.
 **Acknowledgments**
 Thank you to the entire Cardzz team for their hard work and dedication. 💡
 <!-- GitAds-Verify: MWML9C7CUGQN5GDPCHXKDCNZKRLW2OT4 -->
+## GitAds Sponsored
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=krishn404/cardzz@github)](https://gitads.dev/v1/ad-track?source=krishn404/cardzz@github)
+
